@@ -13,5 +13,5 @@ set(CMAKE_C_STANDARD 99)
 add_library(h6n STATIC
         src/createinterface.c)
     
-target_include_directories(h6n PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/)
+target_include_directories(h6n PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
