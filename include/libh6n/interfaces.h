@@ -50,7 +50,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      * @param thiz pointer to the H6AC instance
      * @param playerID a 128-bit integer that represents the current player universally uniquely
      */
-    H6NSDK_VIRTUAL(setPlayerUniqueID, void)(ThisType* thiz, H6N_PlayerID playerID);
+    H6NSDK_VIRTUAL(setPlayerUniqueID, void)(H6N_PlayerID playerID);
 
     /**
      * Determines if the player unique ID is known to H6AC at the time of calling.
@@ -61,7 +61,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      * @param thiz pointer to the H6AC instance
      * @return 1 if the player unique ID has been acquired through any means, 0 if no ID had been established
      */
-    H6NSDK_VIRTUAL(isPlayerIDAquired, int)(ThisType* thiz);
+    H6NSDK_VIRTUAL(isPlayerIDAquired, int)();
 
 #undef ThisType
 }_H6NSDK_IFACE_END(H6ACClient, 1);
@@ -78,15 +78,16 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
  * Current interface version defined in H6AC_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
+#define ThisType struct H6NSDK_IFACE_STRUCT(H6ACServer, 1)
 
     /**
      * Frees the structure.
      * @param thiz pointer to the H6AC instance
      */
-    H6NSDK_VIRTUAL(release, void)(void* thiz);
+    H6NSDK_VIRTUAL(release, void)(ThisType* thiz);
 
 
-
+#undef ThisType
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
 
