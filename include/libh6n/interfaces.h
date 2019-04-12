@@ -13,6 +13,11 @@
 
 #include <libh6n/common.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #define H6AC_CLIENT_VERSION 1
 #define H6AC_CLIENT_INTERFACE "H6ACClient"
 
@@ -31,7 +36,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      * Frees the structure.
      * @param thiz pointer to the H6AC instance
      */
-    H6NSDK_VIRTUAL(release, void)(void* thiz);
+	H6NSDK_VIRTUAL(release, void)(void* thiz);
 
     /**
      * Specifies the unique player ID for the current session, such as a player ID, account number, Steam ID, or other
@@ -57,10 +62,8 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      */
     H6NSDK_VIRTUAL(isPlayerIDAquired, int)(void* thiz);
 
-
-} _H6NSDK_IFACE_END(H6ACClient, 1);
+}_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
-
 
 
 
@@ -84,5 +87,9 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_H6NSDK_INTERFACES_H

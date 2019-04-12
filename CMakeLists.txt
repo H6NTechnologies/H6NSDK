@@ -2,6 +2,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 
 project(h6nsdk C)
 
+option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" OFF)
+option(CSHARP_BINDINGS "Build C# bindings" ON)
+
 # Fix dumb bug in cmake...
 if(CMAKE_C_STANDARD_DEFAULT EQUAL 98)
     set(CMAKE_C_STANDARD_DEFAULT 99 CACHE STRING "" FORCE)
@@ -15,3 +18,11 @@ add_library(h6n STATIC
     
 target_include_directories(h6n PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
+
+if(SWIG_BINDINGS)
+	add_subdirectory(swig)
+endif()
+
+if(CSHARP_BINDINGS)
+	add_subdirectory(csharp)
+endif()
