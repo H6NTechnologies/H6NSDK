@@ -8,6 +8,6 @@ add_custom_command(TARGET libh6n-csgen
 if(MSVC)
 	enable_language(CSharp)
 	add_library(libh6n-cs SHARED)
-	add_dependencies(h6nlibh6n-cs libh6n-csgen)
+	add_dependencies(libh6n-cs libh6n-csgen)
 
 endif()
