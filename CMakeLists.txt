@@ -35,27 +35,60 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 		set_target_properties(${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_NAME "${TARGET_NAME}")
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_PREFIX "")
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_SUFFIX ".lib")
+		set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "")
+
 	else()
 		add_library(${TARGET_NAME} INTERFACE)
 	endif()
 	target_include_directories(${TARGET_NAME} PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 endmacro(DefineImplib)
 
-if(BUILD_AGENT_LIB)
-	DefineImplib(libh6n-agent src/agent.c src/agent.def)
+# Only generate implibs on Windows since other platforms are smart enough to link against
+# the shared library directly
+if(WIN32)
+	if(BUILD_AGENT_LIB)
+		DefineImplib(libh6n-agent src/agent.c src/agent.def)
+	endif()
+
+	if(BUILD_CAPSULE_LIB)
+		DefineImplib(libh6n-capsule src/capsule.c src/capsule.def)
+	endif()
 endif()
 
-if(BUILD_CAPSULE_LIB)
-	DefineImplib(libh6n-capsule src/capsule.c src/capsule.def)
+add_library(libh6n-headers INTERFACE)
+target_include_directories(libh6n-headers INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include")
+
+
+if(WIN32)
+	# Create "imported" target which imports the agent/capsule implibs
+	add_library(libh6n INTERFACE)
+	add_dependencies(libh6n libh6n-agent libh6n-capsule)
+
+	get_filename_component(capsule_name $<TARGET_PROPERTY:libh6n-capsule,ARCHIVE_OUTPUT_NAME> "NAME_WE")
+	get_filename_component(agent_name $<TARGET_PROPERTY:libh6n-agent,ARCHIVE_OUTPUT_NAME> "NAME_WE")
+
+	set(bindir "${CMAKE_CURRENT_BINARY_DIR}/")
+
+	target_link_libraries(libh6n INTERFACE libh6n-headers "${BINDIR}H6NSDK/${capsule_name}.lib" "${BINDIR}H6NSDK/${agent_name}.lib")
+
+	# This is kind of a hack -- bug in CMake causes non-MSVC-built targets to link
+	# against the DLL itself instead of the implib. 
+	#set_target_properties(libh6n PROPERTIES IMPORTED_LOCATION  "$<TARGET_FILE:libh6n-capsule>")
+	#set_target_properties(libh6n PROPERTIES INCLUDE_DIRECTORIES  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include")
+
+else()
+	# Create "interface" target which is header only
+	add_library(libh6n ALIAS libh6n-headers)
 endif()
 
-add_library(libh6n INTERFACE)
-target_include_directories(libh6n INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
+
+# Deprecated
 if(SWIG_BINDINGS)
 	add_subdirectory(swig)
 endif()
 
+# Generate C# bindings
 if(CSHARP_BINDINGS)
 	add_subdirectory(csharp)
 endif()

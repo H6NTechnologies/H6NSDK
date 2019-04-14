@@ -1,17 +1,7 @@
-#include "libh6n/common.h"
-
+#include <libh6n/common.h>
 
 #ifndef _H6NSDK_CAPSULE_H
 #define _H6NSDK_CAPSULE_H
-
-
-#if defined(_WIN32) || defined(_WIN64)
-#define _H6N_IMPORT
-#define _H6N_EXPORT __declspec(dllexport)
-#else
-#define _H6N_IMPORT
-#define _H6N_EXPORT
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,51 +50,17 @@ extern "C" {
 
 	typedef void(__cdecl *Capsule_progressCallback)(float percent);
 
-	/**
-	* Parameters required by H6Capsule upon launching.
-	*/
-	typedef struct _CapsuleConfig {
-		/**
-		*
-		*/
-		char* targetExecutable;
-
-		/**
-		*
-		*/
-		char* commandLine;
-
-		/**
-		*
-		*/
-		int reportErrors;
-
-		/**
-		*
-		*/
-		Capsule_errorCallback errorCallback;
-
-		/**
-		*
-		*/
-		Capsule_progressCallback progressCallback;
+#define H6N_CAPSULE_VERSION 1
+#define H6N_CAPSULE_INTERFACE "H6Capsule"
 
 
-	} CapsuleConfig;
 
-	/**
-	* Call this to securely launch the game.  This function serves as the demarcation point between
-	* the parent launcher implementation and H6Capsule. This function will always launch the target
-	* executable with H6AC loaded &amp; running.
-	*
-	* @param 	  	integrationID	the H6N Integration ID, acquired from the H6N Dev Center, under
-	* 								Manage Integrations.
-	* @param [in]	context		 	The context.
-	*
-	* @return	0 if the operation succeeded. If != 0, an operating system error code.
-	*/
-	long Capsule_launch(H6N_IntegrationID integrationID, CapsuleConfig context);
-
+	_H6NSDK_IFACE_BEGIN(H6Capsule, 1) {
+		H6NSDK_VIRTUAL(launch, long)(const char* targetProcess, H6N_IntegrationID id, char* args);
+		H6NSDK_VIRTUAL(errorCallback, void)(Capsule_errorCallback errorCallback);
+		H6NSDK_VIRTUAL(progressCallback, void)(Capsule_progressCallback progressCallback);
+	} _H6NSDK_IFACE_END(H6Capsule, 1);
+#define H6Capsule H6NSDK_INTERFACE(H6Capsule, 1)
 
 #ifdef __cplusplus
 }

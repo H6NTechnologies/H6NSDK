@@ -13,6 +13,7 @@
 
 #include <libh6n/common.h>
 #include <libh6n/interfaces.h>
+#include <libh6n/capsule.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,7 +35,9 @@ extern "C" {
 	 *          b) the H6N agent shared library is not loaded, or
 	 *          c) if any other error occurs.
 	 */
-	void* H6N_createInterface(const char* name, int version);
+	void* Agent_createInterface(const char* name, int version);
+
+	void* Capsule_createInterface(const char* name, int version);
 
 #ifdef __cplusplus
 }

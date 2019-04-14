@@ -1,5 +1,5 @@
 LIBRARY libcapsule
 EXPORTS
-	Capsule_flattenArgs					PRIVATE
-	Capsule_flattenArgsLength			PRIVATE
-	Capsule_launch						PRIVATE
+	Capsule_flattenArgs					
+	Capsule_flattenArgsLength			
+	Capsule_createInterface				
