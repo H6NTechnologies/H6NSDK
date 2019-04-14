@@ -21,14 +21,15 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 	# static library of stubs.
 	if (WIN32)
 		set(DEFINITION_ARG "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/${DEF_FILE}\"")
-		add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 
 		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+			add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 			# Pass linker flag via -Wl on Clang/GCC
 			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "-Wl,${DEFINITION_ARG}")
 		elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+			add_library(${TARGET_NAME} SHARED ${STUB_FILE} ${DEF_FILE})
 			# MSVC invokes link.exe with parameters directly
-			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "${DEFINITION_ARG}")
+			#set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "${DEFINITION_ARG}")
 		endif()
 
 		set_target_properties(${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_NAME "${TARGET_NAME}")
