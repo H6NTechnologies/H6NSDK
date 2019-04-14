@@ -47,7 +47,6 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      * This value may be automatically acquired by H6AC.
      *
      * @see H6AC::isPlayerIDAcquired for more details about auto-acquiring
-     * @param thiz pointer to the H6AC instance
      * @param playerID a 128-bit integer that represents the current player universally uniquely
      */
     H6NSDK_VIRTUAL(setPlayerUniqueID, void)(H6N_PlayerID playerID);
@@ -58,15 +57,37 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
      * API to retrieve the player ID.  In these cases, there's no need to manually specify the player ID with the
      * H6AC::setPlayerUniqueID function.
      *
-     * @param thiz pointer to the H6AC instance
      * @return 1 if the player unique ID has been acquired through any means, 0 if no ID had been established
      */
     H6NSDK_VIRTUAL(isPlayerIDAquired, int)();
+
+	/**
+	 * Submits an acquired client attestation token to the agent.
+	 * Attestation tokens provide a strongly secure method to authenticate a client. Without an attestation token, the H6AC client
+	 * will present only the player unique ID to the H6AC server for authentication. While we believe this is "good enough" security,
+	 * you may elect to enable client authentication tokens, in which your game's server sends an arbitrarily-lengthed token, generated
+	 * by H6ACServer, to the game client, which then presents the token to the H6AC client using this function. 
+	 *
+	 * @param attestation the attestation token to submit, of the specified length
+	 * @param length the length of the attestation string, in bytes
+	 */
+	H6NSDK_VIRTUAL(submitClientAttestation, void)(uint8_t* attestation, size_t length);
+
+	/**
+	 * Reset the attestation state. In a nutshell, this function will clear the current active attestation token.
+	 * You would normally call this function when the game client disconnects from its current server. You don't *have* to call this,
+	 * it will just prevent instances in which the H6AC client attempts to use a stale (i.e. old or from another server) attestation
+	 * token to authenticate.  For this reason, we recommend it, but you don't have to.
+	 */
+	H6NSDK_VIRTUAL(purgeAttestation, void)();
+
+
 
 #undef ThisType
 }_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
 
+#define H6N_createCient() (H6ACClient*)H6N_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
 
 
 #define H6AC_SERVER_VERSION 1
@@ -90,6 +111,9 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 #undef ThisType
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
+
+#define H6N_createServer() (H6ACServer*)H6N_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
+
 
 #ifdef __cplusplus
 }

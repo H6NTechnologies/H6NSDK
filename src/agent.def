@@ -1,0 +1,3 @@
+LIBRARY H6Agent
+EXPORTS
+	Agent_createInterface					PRIVATE

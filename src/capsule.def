@@ -1,0 +1,5 @@
+LIBRARY libcapsule
+EXPORTS
+	Capsule_flattenArgs					PRIVATE
+	Capsule_flattenArgsLength			PRIVATE
+	Capsule_launch						PRIVATE
