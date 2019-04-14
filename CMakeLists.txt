@@ -26,7 +26,7 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 			add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 			# Pass linker flag via -Wl on Clang/GCC
 			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "-Wl,${DEFINITION_ARG}")
-		elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+		elseif (MSVC)
 			add_library(${TARGET_NAME} SHARED ${STUB_FILE} ${DEF_FILE})
 			# MSVC invokes link.exe with parameters directly
 			#set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "${DEFINITION_ARG}")
