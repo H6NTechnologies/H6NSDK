@@ -20,8 +20,8 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 	# If targetting Windows, we need to generate an import library (implib) which is a
 	# static library of stubs.
 	if (WIN32)
-		set(DEFINITION_ARG "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/src/agent.def\"")
-		add_library(${TARGET_NAME} SHARED src/agent.c)
+		set(DEFINITION_ARG "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/${DEF_FILE}\"")
+		add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 
 		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 			# Pass linker flag via -Wl on Clang/GCC
@@ -31,11 +31,8 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "${DEFINITION_ARG}")
 		endif()
 
-		# set base name of generated DLL import library
 		set_target_properties(${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_NAME "${TARGET_NAME}")
-		# set prefix of generated DLL import library
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_PREFIX "")
-		# set suffix of generated DLL import library
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_SUFFIX ".lib")
 	else()
 		add_library(${TARGET_NAME} INTERFACE)
