@@ -13,6 +13,9 @@
 
 #include <libh6n/common.h>
 
+#define H6N_AGENT_MODULE "H6Agent" _H6N_SHARED_LIB_EXT
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif

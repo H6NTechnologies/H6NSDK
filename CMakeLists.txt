@@ -36,7 +36,7 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_PREFIX "")
 		set_target_properties(${TARGET_NAME} PROPERTIES IMPORT_SUFFIX ".lib")
 		set_target_properties(${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "")
-
+		target_compile_definitions(${TARGET_NAME} PRIVATE "_H6N_IMPLEMENTS_EXPORT")
 	else()
 		add_library(${TARGET_NAME} INTERFACE)
 	endif()

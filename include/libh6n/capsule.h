@@ -3,6 +3,14 @@
 #ifndef _H6NSDK_CAPSULE_H
 #define _H6NSDK_CAPSULE_H
 
+
+#define H6N_CAPSULE_MODULE "libcapsule" _H6N_SHARED_LIB_EXT
+
+#define _H6N_CAPSULE_RESULT(VAL) ((long)VAL) 
+#define H6N_CAPSULE_RESULT_SUCCESS _H6N_CAPSULE_RESULT(1)
+#define H6N_CAPSULE_RESULT_RELAUNCH _H6N_CAPSULE_RESULT(-1)
+#define H6N_CAPSULE_RESULT_FAILURE _H6N_CAPSULE_RESULT(0)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,7 +27,7 @@ extern "C" {
 	* @param 	   	outLength	The size of the output buffer, in bytes.
 	*/
 
-	void Capsule_flattenArgs(int argc, char** argv, char* out,
+	_H6N_EXPORTED void _H6N_SPEC Capsule_flattenArgs(int argc, char** argv, char* out,
 		unsigned int outLength);
 
 	/**
@@ -32,7 +40,7 @@ extern "C" {
 	* @return	The size of the buffer required to hold the flattened string, in bytes.
 	*/
 
-	unsigned int Capsule_flattenArgsLength(int argc, char** argv);
+	_H6N_EXPORTED unsigned int _H6N_SPEC Capsule_flattenArgsLength(int argc, char** argv);
 
 	/**
 	* Callback function that receives an error message.
@@ -50,6 +58,15 @@ extern "C" {
 
 	typedef void(__cdecl *Capsule_progressCallback)(float percent);
 
+
+	/**
+	 * When this callback is called, it is expected that the launcher will either terminate and reopen,
+	 * or unload and reload libcapsule.
+	 * 
+	 * 
+	 */
+	typedef void(_H6N_SPEC* Capsule_reloadCallback)();
+
 #define H6N_CAPSULE_VERSION 1
 #define H6N_CAPSULE_INTERFACE "H6Capsule"
 
@@ -59,6 +76,7 @@ extern "C" {
 		H6NSDK_VIRTUAL(launch, long)(const char* targetProcess, H6N_IntegrationID id, char* args);
 		H6NSDK_VIRTUAL(errorCallback, void)(Capsule_errorCallback errorCallback);
 		H6NSDK_VIRTUAL(progressCallback, void)(Capsule_progressCallback progressCallback);
+		H6NSDK_VIRTUAL(reloadCallback, void)(Capsule_reloadCallback reloadCallback);
 	} _H6NSDK_IFACE_END(H6Capsule, 1);
 #define H6Capsule H6NSDK_INTERFACE(H6Capsule, 1)
 
