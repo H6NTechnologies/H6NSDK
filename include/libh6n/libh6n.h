@@ -8,12 +8,14 @@
  * these files in source or binary form in any way.
  */
 
-#ifndef _H6NSDK_LIBH6N_H
-#define _H6NSDK_LIBH6N_H
 
 #include <libh6n/common.h>
 #include <libh6n/interfaces.h>
 #include <libh6n/capsule.h>
+
+#ifndef _H6NSDK_LIBH6N_H
+#define _H6NSDK_LIBH6N_H
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,9 +37,9 @@ extern "C" {
 	 *          b) the H6N agent shared library is not loaded, or
 	 *          c) if any other error occurs.
 	 */
-	void* Agent_createInterface(const char* name, int version);
+	_H6N_EXPORTED void* _H6N_SPEC Agent_createInterface(const char* name, int version);
 
-	void* Capsule_createInterface(const char* name, int version);
+	_H6N_EXPORTED void* _H6N_SPEC Capsule_createInterface(const char* name, int version);
 
 #ifdef __cplusplus
 }

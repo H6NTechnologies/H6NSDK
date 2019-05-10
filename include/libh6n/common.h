@@ -27,9 +27,42 @@
 
 #define H6NSDK_VIRTUAL(NAME, RET) RET(*NAME)
 
+
 /*
  * Internal Macros
  */
+
+#ifdef _WIN32
+#  define _H6N_WINDOWS
+#  define _H6N_SHARED_LIB_EXT ".dll"
+#elif defined(__MACOS__)
+#  define _H6N_MACOS
+#  define _H6N_SHARED_LIB_EXT ".dylib"
+#elif defined(__linux__)
+#  define _H6N_LINUX
+#  define _H6N_SHARED_LIB_EXT ".so"
+#endif
+
+// Define _H6N_EXPORTED to mean the function should be exported
+#ifdef __INTELLISENSE__
+#  define _H6N_EXPORTED
+#  define _H6N_SPEC __cdecl
+#  define _H6N_EXPORT
+#  define _H6N_IMPORTED
+#else
+#  ifdef _WIN32
+#    define _H6N_EXPORT __declspec(dllexport)
+#    define _H6N_IMPORT __declspec(dllimport)
+#    define _H6N_SPEC __cdecl
+
+#    ifdef _H6N_IMPLEMENTS_EXPORT
+#      define _H6N_EXPORTED __declspec(dllexport)
+#    else
+#      define _H6N_EXPORTED __declspec(dllimport)
+#    endif
+#  endif
+#endif
+
 
 
 
