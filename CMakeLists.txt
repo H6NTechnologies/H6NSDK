@@ -2,8 +2,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 
 project(h6nsdk C)
 
-option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" OFF)
-option(CSHARP_BINDINGS "Build C# bindings" ON)
+option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" ON)
+option(CSHARP_BINDINGS "Build C# bindings" OFF)
 
 option(BUILD_AGENT_LIB "Generate Windows import lib for H6Agent" ON)
 option(BUILD_CAPSULE_LIB "Generate Windows import lib for libcapsule" ON)
@@ -47,11 +47,11 @@ endmacro(DefineImplib)
 # the shared library directly
 if(WIN32)
 	if(BUILD_AGENT_LIB)
-		DefineImplib(libh6n-agent src/agent.c src/agent.def)
+		DefineImplib(libh6n-agent impgen/agent.c impgen/agent.def)
 	endif()
 
 	if(BUILD_CAPSULE_LIB)
-		DefineImplib(libh6n-capsule src/capsule.c src/capsule.def)
+		DefineImplib(libh6n-capsule impgen/capsule.c impgen/capsule.def)
 	endif()
 endif()
 
@@ -61,15 +61,15 @@ target_include_directories(libh6n-headers INTERFACE "$<BUILD_INTERFACE:${CMAKE_C
 
 if(WIN32)
 	# Create "imported" target which imports the agent/capsule implibs
-	add_library(libh6n INTERFACE)
-	add_dependencies(libh6n libh6n-agent libh6n-capsule)
+	add_library(libh6n-direct INTERFACE)
+	add_dependencies(libh6n-direct libh6n-agent libh6n-capsule)
 
 	get_filename_component(capsule_name $<TARGET_PROPERTY:libh6n-capsule,ARCHIVE_OUTPUT_NAME> "NAME_WE")
 	get_filename_component(agent_name $<TARGET_PROPERTY:libh6n-agent,ARCHIVE_OUTPUT_NAME> "NAME_WE")
 
 	set(bindir "${CMAKE_CURRENT_BINARY_DIR}/")
 
-	target_link_libraries(libh6n INTERFACE libh6n-headers "${BINDIR}H6NSDK/${capsule_name}.lib" "${BINDIR}H6NSDK/${agent_name}.lib")
+	target_link_libraries(libh6n-direct INTERFACE libh6n-headers "${BINDIR}H6NSDK/${capsule_name}.lib" "${BINDIR}H6NSDK/${agent_name}.lib")
 
 	# This is kind of a hack -- bug in CMake causes non-MSVC-built targets to link
 	# against the DLL itself instead of the implib. 
@@ -78,9 +78,12 @@ if(WIN32)
 
 else()
 	# Create "interface" target which is header only
-	add_library(libh6n ALIAS libh6n-headers)
+	add_library(libh6n-direct ALIAS libh6n-headers)
 endif()
 
+add_library(libh6n-static STATIC src/interfaces.cpp)
+target_link_libraries(libh6n-static libh6n-headers)
+target_compile_definitions(libh6n-static PUBLIC _H6N_IMPLEMENTS_STATIC)
 
 
 # Deprecated

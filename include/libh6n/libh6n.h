@@ -8,6 +8,11 @@
  * these files in source or binary form in any way.
  */
 
+typedef struct {
+	int a;
+} TestStr;
+
+
 
 #include <libh6n/common.h>
 #include <libh6n/interfaces.h>
@@ -20,6 +25,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+	void H6N_initialize();
+	void Agent_release();
+	void Capsule_release();
 
 	/**
 	 * Retrieves a pointer to an interface by the specified name-version pair. The libh6n API tries to remain backwards-

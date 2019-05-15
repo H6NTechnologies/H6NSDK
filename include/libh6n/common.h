@@ -44,7 +44,8 @@
 #endif
 
 // Define _H6N_EXPORTED to mean the function should be exported
-#ifdef __INTELLISENSE__
+#if defined(__INTELLISENSE__) || defined(SWIG)
+#  define __cdecl 
 #  define _H6N_EXPORTED
 #  define _H6N_SPEC __cdecl
 #  define _H6N_EXPORT
@@ -55,10 +56,14 @@
 #    define _H6N_IMPORT __declspec(dllimport)
 #    define _H6N_SPEC __cdecl
 
-#    ifdef _H6N_IMPLEMENTS_EXPORT
-#      define _H6N_EXPORTED __declspec(dllexport)
+#    ifndef _H6N_IMPLEMENTS_STATIC
+#      ifdef _H6N_IMPLEMENTS_EXPORT
+#        define _H6N_EXPORTED __declspec(dllexport)
+#      else
+#        define _H6N_EXPORTED __declspec(dllimport)
+#      endif
 #    else
-#      define _H6N_EXPORTED __declspec(dllimport)
+#        define _H6N_EXPORTED
 #    endif
 #  endif
 #endif

@@ -7,6 +7,6 @@ unsigned int Capsule_flattenArgsLength(int argc, char** argv) {
 	return 0;
 }
 
-long Capsule_createInterface(const char* name, int version) {
+void* Capsule_createInterface(const char* name, int version) {
 	return 0;
 }

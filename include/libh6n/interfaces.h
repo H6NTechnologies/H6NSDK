@@ -118,6 +118,7 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 #define H6N_createServer() (H6ACServer*)H6N_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
 
 
+
 #ifdef __cplusplus
 }
 #endif
