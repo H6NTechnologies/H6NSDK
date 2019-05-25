@@ -15,7 +15,10 @@
  * Public Macros
  */
 
+// Swig has a hard time parsing this header, so skip it and include it in the interface definition file.
+#ifndef SWIG
 #include <stdint.h>
+#endif
 
 #define CS_IGNORE
 #define CS_VALUE_TYPE 
@@ -35,12 +38,15 @@
 #ifdef _WIN32
 #  define _H6N_WINDOWS
 #  define _H6N_SHARED_LIB_EXT ".dll"
+#  define _H6N_EXECUTABLE_EXT ".exe"
 #elif defined(__MACOS__)
 #  define _H6N_MACOS
 #  define _H6N_SHARED_LIB_EXT ".dylib"
+#  define _H6N_EXECUTABLE_EXT ""
 #elif defined(__linux__)
 #  define _H6N_LINUX
 #  define _H6N_SHARED_LIB_EXT ".so"
+#  define _H6N_EXECUTABLE_EXT ""
 #endif
 
 // Define _H6N_EXPORTED to mean the function should be exported

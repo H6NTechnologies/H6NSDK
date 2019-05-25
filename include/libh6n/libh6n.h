@@ -8,11 +8,6 @@
  * these files in source or binary form in any way.
  */
 
-typedef struct {
-	int a;
-} TestStr;
-
-
 
 #include <libh6n/common.h>
 #include <libh6n/interfaces.h>
