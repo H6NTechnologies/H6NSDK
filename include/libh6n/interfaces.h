@@ -34,7 +34,6 @@ extern "C" {
  * Current interface version defined in H6AC_CLIENT_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
-#define ThisType struct H6NSDK_IFACE_STRUCT(H6ACClient, 1)
 
     /**
      * Specifies the unique player ID for the current session, such as a player ID, account number, Steam ID, or other
@@ -63,7 +62,11 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 	 * Attestation tokens provide a strongly secure method to authenticate a client. Without an attestation token, the H6AC client
 	 * will present only the player unique ID to the H6AC server for authentication. While we believe this is "good enough" security,
 	 * you may elect to enable client authentication tokens, in which your game's server sends an arbitrarily-lengthed token, generated
-	 * by H6ACServer, to the game client, which then presents the token to the H6AC client using this function. 
+	 * by H6ACServer, to the game client, which then presents the token to the H6AC client using this function.
+	 * 
+	 * Electing to use client attestation ensures that an attacker cannot maliciously impersonate another player that happens to share the
+	 * same network as the attacker.  We find this to be incredibly unlikely, if not impossible on IPv6 networks, but plausible on
+	 * IPv4 networks, particularly when the player is behind NAT.
 	 *
 	 * @param attestation the attestation token to submit, of the specified length
 	 * @param length the length of the attestation string, in bytes
@@ -81,7 +84,6 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 
 
 
-#undef ThisType
 }_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
 
@@ -91,18 +93,35 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 #define H6AC_SERVER_VERSION 1
 #define H6AC_SERVER_INTERFACE "H6ACServer"
 
+
+
+
+
+
 /**
- * 
+ * `H6ACServer` is the interface that allows (typically headless) game servers to interact with H6AC, the H6N
+ * Technologies Anti-Cheat. Using this interface is *necessary* for a secure implementation of H6AC in your game,
+ * as H6AC needs to be notified when a player joins and be able to kick players arbitrarily.
  * 
  * Interface name defined in H6AC_INTERFACE as "H6ACServer"
  * Current interface version defined in H6AC_SERVER_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
-#define ThisType struct H6NSDK_IFACE_STRUCT(H6ACServer, 1)
+
+	/**
+	 * 
+	 */
+	H6NSDK_VIRTUAL(registerPlayerIPv4, void)(H6N_PlayerID playerID, long remoteAddr, uint16_t remotePort);
+
+	H6NSDK_VIRTUAL(registerPlayerIPv6, void)(H6N_PlayerID playerID, H6N_IPV6 remoteAddr, uint16_t remotePort);
+
+	/**
+	 * Informs H6AC that the player should no longer be considered by H6AC. Typically, this is called when the player
+	 * disconnects.  
+	 */
+	H6NSDK_VIRTUAL(unregisterPlayer, void)(H6N_PlayerID playerID);
 
 
-
-#undef ThisType
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
 
