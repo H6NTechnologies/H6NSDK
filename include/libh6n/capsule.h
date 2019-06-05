@@ -47,7 +47,7 @@ extern "C" {
 	*
 	* @param	message	The error message.
 	*/
-	typedef void(__cdecl *Capsule_errorCallback)(const char* message);
+	typedef void(*Capsule_errorCallback)(const char* message);
 
 	/**
 	* Callback function that receives a process percentage.
@@ -56,7 +56,7 @@ extern "C" {
 	* 					1 is 100%.
 	*/
 
-	typedef void(__cdecl *Capsule_progressCallback)(float percent);
+	typedef void(*Capsule_progressCallback)(float percent);
 
 
 	/**

@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 
-project(h6nsdk C)
+project(h6nsdk C CXX)
 
 option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" ON)
 option(CSHARP_BINDINGS "Build C# bindings" OFF)
@@ -89,9 +89,9 @@ target_compile_definitions(libh6n-static PUBLIC _H6N_IMPLEMENTS_STATIC)
 # Deprecated
 if(SWIG_BINDINGS)
 	add_subdirectory(swig)
+else()
+    add_library(libh6n SHARED src/interfaces.cpp)
+    target_link_libraries(libh6n libh6n-headers)
+    target_compile_definitions(libh6n SHARED _H6N_IMPLEMENTS_STATIC)
 endif()
 
-# Generate C# bindings
-if(CSHARP_BINDINGS)
-	add_subdirectory(csharp)
-endif()

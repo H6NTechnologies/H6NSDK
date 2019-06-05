@@ -71,7 +71,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 	 * @param attestation the attestation token to submit, of the specified length
 	 * @param length the length of the attestation string, in bytes
 	 */
-	H6NSDK_VIRTUAL(submitClientAttestation, void)(uint8_t* attestation, size_t length);
+	H6NSDK_VIRTUAL(submitClientAttestation, void)(uint8_t* attestation, unsigned int length);
 
 	/**
 	 * Resets the client's internal state. This will manually clear out any session-specific state data being held by

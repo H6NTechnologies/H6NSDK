@@ -57,7 +57,7 @@
 #  define _H6N_EXPORT
 #  define _H6N_IMPORTED
 #else
-#  ifdef _WIN32
+#  ifdef _H6N_WINDOWS
 #    define _H6N_EXPORT __declspec(dllexport)
 #    define _H6N_IMPORT __declspec(dllimport)
 #    define _H6N_SPEC __cdecl
@@ -71,6 +71,11 @@
 #    else
 #        define _H6N_EXPORTED
 #    endif
+#  elif defined(_H6N_LINUX)
+#    define _H6N_EXPORT  __attribute__ ((visibility ("default")))
+#    define _H6N_IMPORT
+#    define _H6N_SPEC
+#    define _H6N_EXPORTED
 #  endif
 #endif
 
