@@ -30,17 +30,11 @@ extern "C" {
  * We try our hardest to keep this interface backwards compatible through versioning -- that is, you shouldn't ever
  * *have* to upgrade to a newer SDK version to continue using H6AC, you may just miss out on any new features.
  *
- * Interface name defined in H6AC_INTERFACE as "H6ACClient"
- * Current interface version defined in H6AC_VERSION as 1
+ * Interface name defined in H6AC_CLIENT_INTERFACE as "H6ACClient"
+ * Current interface version defined in H6AC_CLIENT_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 #define ThisType struct H6NSDK_IFACE_STRUCT(H6ACClient, 1)
-
-    /**
-     * Frees the structure.
-     * @param thiz pointer to the H6AC instance
-     */
-	H6NSDK_VIRTUAL(release, void)(ThisType* thiz);
 
     /**
      * Specifies the unique player ID for the current session, such as a player ID, account number, Steam ID, or other
@@ -77,12 +71,13 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 	H6NSDK_VIRTUAL(submitClientAttestation, void)(uint8_t* attestation, size_t length);
 
 	/**
-	 * Reset the attestation state. In a nutshell, this function will clear the current active attestation token.
-	 * You would normally call this function when the game client disconnects from its current server. You don't *have* to call this,
-	 * it will just prevent instances in which the H6AC client attempts to use a stale (i.e. old or from another server) attestation
-	 * token to authenticate.  For this reason, we recommend it, but you don't have to.
+	 * Resets the client's internal state. This will manually clear out any session-specific state data being held by
+	 * H6AC, such as the client authentication token.  The use case for this is to prevent H6AC from using stale data
+	 * to connect to a new server.  This should therefore be typically called upon disconnecting from the current game
+	 * server.  Calling this function is optional -- H6AC should eventually clear out its internal state, but this 
+	 * function guarantees it.
 	 */
-	H6NSDK_VIRTUAL(purgeAttestation, void)();
+	H6NSDK_VIRTUAL(purgeState, void)();
 
 
 
@@ -90,32 +85,28 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 }_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
 
-#define H6N_createCient() (H6ACClient*)H6N_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
+#define H6N_createCient() (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
 
 
 #define H6AC_SERVER_VERSION 1
 #define H6AC_SERVER_INTERFACE "H6ACServer"
 
 /**
- *
+ * 
+ * 
  * Interface name defined in H6AC_INTERFACE as "H6ACServer"
- * Current interface version defined in H6AC_VERSION as 1
+ * Current interface version defined in H6AC_SERVER_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 #define ThisType struct H6NSDK_IFACE_STRUCT(H6ACServer, 1)
 
-    /**
-     * Frees the structure.
-     * @param thiz pointer to the H6AC instance
-     */
-    H6NSDK_VIRTUAL(release, void)(ThisType* thiz);
 
 
 #undef ThisType
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
 
-#define H6N_createServer() (H6ACServer*)H6N_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
+#define H6N_createServer() (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
 
 
 

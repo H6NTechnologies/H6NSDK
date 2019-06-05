@@ -72,11 +72,10 @@ extern "C" {
 
 
 
-	_H6NSDK_IFACE_BEGIN(H6Capsule, 1) {
+	_H6NSDK_IFACE_BEGIN(H6Capsule, 1) {	
 		H6NSDK_VIRTUAL(launch, long)(const char* targetProcess, H6N_IntegrationID id, char* args);
 		H6NSDK_VIRTUAL(errorCallback, void)(Capsule_errorCallback errorCallback);
 		H6NSDK_VIRTUAL(progressCallback, void)(Capsule_progressCallback progressCallback);
-		H6NSDK_VIRTUAL(reloadCallback, void)(Capsule_reloadCallback reloadCallback);
 	} _H6NSDK_IFACE_END(H6Capsule, 1);
 #define H6Capsule H6NSDK_INTERFACE(H6Capsule, 1)
 

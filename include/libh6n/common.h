@@ -109,5 +109,7 @@ typedef union _H6N_Int128 {
 
 typedef H6N_Int128 H6N_PlayerID;
 typedef H6N_Int128 H6N_IntegrationID;
+typedef H6N_Int128 H6N_UUID;
+typedef H6N_Int128 H6N_IPV6;
 
 #endif // _H6NSDK_COMMON_H
