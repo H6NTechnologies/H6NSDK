@@ -8,6 +8,7 @@ option(CSHARP_BINDINGS "Build C# bindings" OFF)
 option(BUILD_AGENT_LIB "Generate Windows import lib for H6Agent" ON)
 option(BUILD_CAPSULE_LIB "Generate Windows import lib for libcapsule" ON)
 
+
 # Fix dumb bug in cmake...
 if(CMAKE_C_STANDARD_DEFAULT EQUAL 98)
     set(CMAKE_C_STANDARD_DEFAULT 99 CACHE STRING "" FORCE)
@@ -58,7 +59,6 @@ endif()
 add_library(libh6n-headers INTERFACE)
 target_include_directories(libh6n-headers INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include")
 
-
 if(WIN32)
 	# Create "imported" target which imports the agent/capsule implibs
 	add_library(libh6n-direct INTERFACE)
@@ -86,12 +86,35 @@ target_link_libraries(libh6n-static libh6n-headers)
 target_compile_definitions(libh6n-static PUBLIC _H6N_IMPLEMENTS_STATIC)
 
 
-# Deprecated
 if(SWIG_BINDINGS)
 	add_subdirectory(swig)
 else()
-    add_library(libh6n SHARED src/interfaces.cpp)
-    target_link_libraries(libh6n libh6n-headers)
-    target_compile_definitions(libh6n SHARED _H6N_IMPLEMENTS_STATIC)
+	add_library(libh6n SHARED src/interfaces.cpp)
+	target_link_libraries(libh6n libh6n-headers)
+	target_compile_definitions(libh6n PUBLIC _H6N_IMPLEMENTS_STATIC)
 endif()
 
+# Deprecated
+if(CSHARP_BINDINGS)
+	add_subdirectory(csharp)
+endif()
+
+# Install targets
+
+set(INSTALL_TARGETS
+	libh6n-headers
+	libh6n-capsule
+	libh6n-agent
+	libh6n-static
+	libh6n)
+
+file(GLOB INSTALL_HEADERS "include/libh6n/*.h")
+install(FILES ${INSTALL_HEADERS} DESTINATION include/libh6n)
+
+install(TARGETS ${INSTALL_TARGETS}
+        EXPORT h6nsdk-targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
