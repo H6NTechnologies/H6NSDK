@@ -194,8 +194,10 @@ void* Platform_moduleSymbol(void* handle, const char* symbolName) {
 
 #elif defined(_H6N_POSIX)
 
+#include <dlfcn.h>
+
 void Platform_initMutex(PlatformMutex* mutex) {
-	*mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+    pthread_mutex_init(mutex, 0);
 }
 
 void Platform_enterMutex(PlatformMutex* mutex) {
@@ -204,6 +206,18 @@ void Platform_enterMutex(PlatformMutex* mutex) {
 
 void Platform_leaveMutex(PlatformMutex* mutex) {
 	pthread_mutex_unlock(mutex);
+}
+
+void* Platform_acquireModule(const char* moduleName) {
+    return dlopen(moduleName, 0);
+}
+
+void Platform_freeModule(void* handle) {
+    dlclose(handle);
+}
+
+void* Platform_moduleSymbol(void* handle, const char* symbolName) {
+    return (void*)dlsym(handle, symbolName);
 }
 
 #endif

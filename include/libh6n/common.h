@@ -39,7 +39,7 @@
 #  define _H6N_WINDOWS
 #  define _H6N_SHARED_LIB_EXT ".dll"
 #  define _H6N_EXECUTABLE_EXT ".exe"
-#elif defined(__MACOS__)
+#elif defined(__APPLE__)
 #  define _H6N_MACOS
 #  define _H6N_SHARED_LIB_EXT ".dylib"
 #  define _H6N_EXECUTABLE_EXT ""
@@ -71,7 +71,7 @@
 #    else
 #        define _H6N_EXPORTED
 #    endif
-#  elif defined(_H6N_LINUX)
+#  elif defined(_H6N_LINUX) || defined(_H6N_MACOS)
 #    define _H6N_EXPORT  __attribute__ ((visibility ("default")))
 #    define _H6N_IMPORT
 #    define _H6N_SPEC
