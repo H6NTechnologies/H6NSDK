@@ -87,14 +87,24 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 }_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
 
-#define H6N_createCient() (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
+#define Agent_createCient() (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
+
+
 
 
 #define H6AC_SERVER_VERSION 1
 #define H6AC_SERVER_INTERFACE "H6ACServer"
 
 
+/**
+ * 
+ */
+typedef int(*H6NSDK_INTERFACE(H6ACServer_kickCallback, 1))(H6N_PlayerID playerID, const char* reason);
 
+/**
+ *
+ */
+typedef void(*H6NSDK_INTERFACE(H6ACServer_attestationCallback, 1))(H6N_PlayerID playerID, uint8_t* attestation, unsigned int length);
 
 
 
@@ -112,7 +122,6 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 	 * 
 	 */
 	H6NSDK_VIRTUAL(registerPlayerIPv4, void)(H6N_PlayerID playerID, long remoteAddr, uint16_t remotePort);
-
 	H6NSDK_VIRTUAL(registerPlayerIPv6, void)(H6N_PlayerID playerID, H6N_IPV6 remoteAddr, uint16_t remotePort);
 
 	/**
@@ -121,11 +130,21 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 	 */
 	H6NSDK_VIRTUAL(unregisterPlayer, void)(H6N_PlayerID playerID);
 
+	/**
+	 *
+	 */
+	H6NSDK_VIRTUAL(setKickCallback, void)(H6NSDK_INTERFACE(H6ACServer_kickCallback, 1) callback);
+
+	/**
+	 * 
+	 */
+	H6NSDK_VIRTUAL(setAttestationCallback, void)(H6NSDK_INTERFACE(H6ACServer_attestationCallback, 1) callback);
+
 
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
 
-#define H6N_createServer() (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
+#define Agent_createServer() (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
 
 
 

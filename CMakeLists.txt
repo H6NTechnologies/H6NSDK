@@ -94,12 +94,12 @@ else()
 	target_compile_definitions(libh6n PUBLIC _H6N_IMPLEMENTS_STATIC)
 endif()
 
-# Deprecated
-if(CSHARP_BINDINGS)
-	add_subdirectory(csharp)
-endif()
 
-# Install targets
+
+# Create install target
+# This target creates the SDK bundle
+
+include(CMakePackageConfigHelpers)
 
 set(INSTALL_TARGETS
 	libh6n-headers
@@ -117,4 +117,48 @@ install(TARGETS ${INSTALL_TARGETS}
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include
+)
+
+# Layout. This works for all platforms:
+#   * <prefix>/lib*/cmake/<PROJECT-NAME>
+#   * <prefix>/lib*/
+#   * <prefix>/include/
+set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+
+
+set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+set(targets_config "${generated_dir}/${PROJECT_NAME}Targets.cmake")
+set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+
+EXPORT(TARGETS ${targets}
+  FILE "${targets_config}")
+
+
+
+configure_package_config_file(
+    "Config.cmake.in"
+    "${project_config}"
+	INSTALL_DESTINATION "${config_install_dir}"
+)
+
+
+# Config
+#   * <prefix>/lib/cmake/Foo/FooConfig.cmake
+#   * <prefix>/lib/cmake/Foo/FooConfigVersion.cmake
+install(
+    FILES "${project_config}" "${version_config}"
+    DESTINATION "${config_install_dir}"
+)
+
+# Config
+#   * <prefix>/lib/cmake/Foo/FooTargets.cmake
+install(
+    EXPORT "${PROJECT_NAME}Targets"
+	NAMESPACE "${namespace}"
+    DESTINATION "${config_install_dir}"
 )
