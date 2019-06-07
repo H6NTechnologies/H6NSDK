@@ -1,3 +1,7 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
+cmake_policy(SET CMP0078 NEW)
+cmake_policy(SET CMP0086 NEW)
+
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
