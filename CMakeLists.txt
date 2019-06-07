@@ -23,7 +23,7 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 	if (WIN32)
 		set(DEFINITION_ARG "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/${DEF_FILE}\"")
 
-		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL Clang OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL GNU)
 			add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 			# Pass linker flag via -Wl on Clang/GCC
 			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "-Wl,${DEFINITION_ARG}")
@@ -108,11 +108,18 @@ set(INSTALL_TARGETS
 	libh6n-static
 	libh6n)
 
+	set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+set(targets_config "${generated_dir}/${PROJECT_NAME}Targets.cmake")
+set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+
 file(GLOB INSTALL_HEADERS "include/libh6n/*.h")
 install(FILES ${INSTALL_HEADERS} DESTINATION include/libh6n)
 
 install(TARGETS ${INSTALL_TARGETS}
-        EXPORT h6nsdk-targets
+        EXPORT ${TARGETS_EXPORT_NAME}
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
@@ -128,11 +135,6 @@ set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
 
-set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
-set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
-set(targets_config "${generated_dir}/${PROJECT_NAME}Targets.cmake")
-set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
-set(namespace "${PROJECT_NAME}::")
 
 
 EXPORT(TARGETS ${targets}
@@ -145,6 +147,7 @@ configure_package_config_file(
     "${project_config}"
 	INSTALL_DESTINATION "${config_install_dir}"
 )
+
 
 
 # Config
@@ -162,3 +165,4 @@ install(
 	NAMESPACE "${namespace}"
     DESTINATION "${config_install_dir}"
 )
+
