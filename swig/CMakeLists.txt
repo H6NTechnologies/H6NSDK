@@ -9,7 +9,7 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
 
-set_property(SOURCE interfaces.i PROPERTY CPLUSPLUS ON)
+set_property(SOURCE interfaces.i PROPERTY CPLUSPLUS OFF)
 set_source_files_properties(interfaces.i PROPERTIES SWIG_FLAGS "-includeall" INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>;$<INSTALL_INTERFACE:include>")
 swig_add_library(libh6n
 	TYPE SHARED
