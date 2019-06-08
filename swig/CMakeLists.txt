@@ -24,6 +24,7 @@ if(CSHARP_BINDINGS)
 	include(CheckLanguage)
 	check_language(CSharp)
 	if(CMAKE_CSharp_COMPILER)
-	  enable_language(CSharp)
+		enable_language(CSharp)
+		
 	endif()
 endif()
