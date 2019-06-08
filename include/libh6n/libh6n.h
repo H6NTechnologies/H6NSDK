@@ -22,8 +22,6 @@ extern "C" {
 #endif
 
 	void H6N_initialize();
-	void Agent_release();
-	void Capsule_release();
 
 	/**
 	 * Retrieves a pointer to an interface by the specified name-version pair. The libh6n API tries to remain backwards-

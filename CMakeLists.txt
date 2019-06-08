@@ -3,7 +3,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 project(h6nsdk C CXX)
 
 option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" ON)
-option(CSHARP_BINDINGS "Build C# bindings" OFF)
 
 option(BUILD_AGENT_LIB "Generate Windows import lib for H6Agent" ON)
 option(BUILD_CAPSULE_LIB "Generate Windows import lib for libcapsule" ON)
@@ -23,7 +22,7 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 	if (WIN32)
 		set(DEFINITION_ARG "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/${DEF_FILE}\"")
 
-		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL Clang OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL GNU)
+		if(${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
 			add_library(${TARGET_NAME} SHARED ${STUB_FILE})
 			# Pass linker flag via -Wl on Clang/GCC
 			set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "-Wl,${DEFINITION_ARG}")
@@ -73,6 +72,7 @@ if(WIN32)
 
 	# This is kind of a hack -- bug in CMake causes non-MSVC-built targets to link
 	# against the DLL itself instead of the implib. 
+	# Commented out for now -- see above
 	#set_target_properties(libh6n PROPERTIES IMPORTED_LOCATION  "$<TARGET_FILE:libh6n-capsule>")
 	#set_target_properties(libh6n PROPERTIES INCLUDE_DIRECTORIES  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include")
 
@@ -94,21 +94,62 @@ else()
 	target_compile_definitions(libh6n PUBLIC _H6N_IMPLEMENTS_STATIC)
 endif()
 
-
+file(STRINGS "buildnumber" BUILD_NUMBER)
 
 # Create install target
 # This target creates the SDK bundle
 
+set(INSTALL_TARGETS libh6n libh6n-static libh6n-headers libh6n-direct libh6n-agent libh6n-capsule)
+
 include(CMakePackageConfigHelpers)
+
+
+set(TEMP_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen")
+
+set(VERSION_CONFIG "${TEMP_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
+set(PROJECT_CONFIG "${TEMP_DIR}/${PROJECT_NAME}Config.cmake")
+set(TARGETS_CONFIG "${TEMP_DIR}/${PROJECT_NAME}Targets.cmake")
+set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+
+
+EXPORT(TARGETS ${targets}
+	FILE "${TARGETS_CONFIG}"
+)
+
+
+write_basic_package_version_file(
+    "${VERSION_CONFIG}" VERSION ${BUILD_NUMBER} COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+    "Config.cmake.in"
+    "${PROJECT_CONFIG}"
+	INSTALL_DESTINATION "cmake"
+)
 
 
 file(GLOB INSTALL_HEADERS "include/libh6n/*.h")
 install(FILES ${INSTALL_HEADERS} DESTINATION include/libh6n)
 
 install(TARGETS ${INSTALL_TARGETS}
-        EXPORT ${TARGETS_EXPORT_NAME}
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include
+    EXPORT "${TARGETS_EXPORT_NAME}"
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
 )
+
+
+
+install(
+    FILES "${PROJECT_CONFIG}" "${VERSION_CONFIG}"
+    DESTINATION lib
+)
+
+install(
+    EXPORT "${TARGETS_EXPORT_NAME}"
+	NAMESPACE "${PROJECT_NAME}::"
+    DESTINATION lib
+)
+
+

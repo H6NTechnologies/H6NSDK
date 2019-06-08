@@ -28,7 +28,12 @@
 #define H6NSDK_INTERFACE(NAME, VER) _H6N__##NAME##_##VER##_
 #define H6NSDK_IFACE_STRUCT(NAME, VER) __H6N__##NAME##_##VER##_
 
+// Mark virtual fields constant if it's not being implemented
+#if defined(_H6N_IMPLEMENTS_EXPORT) && !defined(SWIG)
 #define H6NSDK_VIRTUAL(NAME, RET) RET(*NAME)
+#else
+#define H6NSDK_VIRTUAL(NAME, RET) const RET(* const NAME)
+#endif
 
 
 /*
