@@ -30,9 +30,14 @@
 
 // Mark virtual fields constant if it's not being implemented
 #if defined(_H6N_IMPLEMENTS_EXPORT) && !defined(SWIG)
-#define H6NSDK_VIRTUAL(NAME, RET) RET(*NAME)
+#  define H6NSDK_VIRTUAL(NAME, RET) RET(*NAME)
 #else
-#define H6NSDK_VIRTUAL(NAME, RET) const RET(* const NAME)
+#  if defined(SWIG)
+	 // make SWIG think the function pointers are actually just normal member functions
+#    define H6NSDK_VIRTUAL(NAME, RET) RET NAME
+#  else
+#    define H6NSDK_VIRTUAL(NAME, RET) RET(* const NAME)
+#  endif
 #endif
 
 

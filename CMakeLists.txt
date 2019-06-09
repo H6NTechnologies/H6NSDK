@@ -43,6 +43,12 @@ macro(DefineImplib TARGET_NAME STUB_FILE DEF_FILE)
 	target_include_directories(${TARGET_NAME} PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 endmacro(DefineImplib)
 
+macro(CreateLibh6n NAME TYPE)
+    add_library(${NAME} ${TYPE} src/interfaces.cpp)
+    target_link_libraries(${NAME} libh6n-headers)
+    target_compile_definitions(${NAME} PUBLIC _H6N_IMPLEMENTS_STATIC)
+endmacro(CreateLibh6n)
+
 # Only generate implibs on Windows since other platforms are smart enough to link against
 # the shared library directly
 if(WIN32)
@@ -81,17 +87,15 @@ else()
 	add_library(libh6n-direct ALIAS libh6n-headers)
 endif()
 
-add_library(libh6n-static STATIC src/interfaces.cpp)
-target_link_libraries(libh6n-static libh6n-headers)
-target_compile_definitions(libh6n-static PUBLIC _H6N_IMPLEMENTS_STATIC)
+# Create static library
+CreateLibh6n(libh6n-static STATIC)
+
+# Create shared library
+CreateLibh6n(libh6n SHARED)
 
 
 if(SWIG_BINDINGS)
 	add_subdirectory(swig)
-else()
-	add_library(libh6n SHARED src/interfaces.cpp)
-	target_link_libraries(libh6n libh6n-headers)
-	target_compile_definitions(libh6n PUBLIC _H6N_IMPLEMENTS_STATIC)
 endif()
 
 file(STRINGS "buildnumber" BUILD_NUMBER)

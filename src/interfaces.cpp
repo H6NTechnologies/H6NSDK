@@ -91,6 +91,24 @@ bool AcquireCapsule() {
 	return GCapsule.flattenArgs != 0 && GCapsule.flattenArgsLen;
 }
 
+/*
+ * Utility function implementation
+ */
+H6ACServer* Agent_createServer() {
+	return (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION);
+}
+
+H6ACClient* Agent_createClient() {
+	return (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION);
+}
+
+H6Capsule* Capsule_createCapsule() {
+	return (H6Capsule*)Capsule_createInterface(H6N_CAPSULE_INTERFACE, H6N_CAPSULE_VERSION);
+}
+
+H6N_Int128 H6N_createInt128(uint64_t low, uint64_t high) {
+	return { low, high };
+}
 
 /*
  * Exported function implementation

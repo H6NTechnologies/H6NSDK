@@ -79,7 +79,7 @@ extern "C" {
 	} _H6NSDK_IFACE_END(H6Capsule, 1);
 #define H6Capsule H6NSDK_INTERFACE(H6Capsule, 1)
 
-
+	H6Capsule* Capsule_createCapsule();
 
 #ifdef __cplusplus
 }

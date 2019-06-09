@@ -35,9 +35,6 @@ extern "C" {
  */
 _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 
-
-	void (* const Test)(int a);
-
     /**
      * Specifies the unique player ID for the current session, such as a player ID, account number, Steam ID, or other
      * number that uniquely identifies the current player. This value must exactly match the value presented to H6AC
@@ -90,7 +87,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 }_H6NSDK_IFACE_END(H6ACClient, 1);
 #define H6ACClient H6NSDK_INTERFACE(H6ACClient, 1)
 
-#define Agent_createCient() (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION)
+H6ACClient* Agent_createClient();
 
 
 
@@ -147,7 +144,8 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 } _H6NSDK_IFACE_END(H6ACServer, 1);
 #define H6ACServer H6NSDK_INTERFACE(H6ACServer, 1)
 
-#define Agent_createServer() (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION)
+H6ACServer* Agent_createServer();
+
 
 
 
