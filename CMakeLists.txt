@@ -7,6 +7,7 @@ option(SWIG_BINDINGS "Build SWIG bindings for C#, Java, Go, etc" ON)
 option(BUILD_AGENT_LIB "Generate Windows import lib for H6Agent" ON)
 option(BUILD_CAPSULE_LIB "Generate Windows import lib for libcapsule" ON)
 
+option(BUILD_TESTS "Build H6NSDK Google Test unit tests" OFF)
 
 # Fix dumb bug in cmake...
 if(CMAKE_C_STANDARD_DEFAULT EQUAL 98)
@@ -96,6 +97,10 @@ CreateLibh6n(libh6n SHARED)
 
 if(SWIG_BINDINGS)
 	add_subdirectory(swig)
+endif()
+
+if(BUILD_TESTS)
+	add_subdirectory(tests)
 endif()
 
 file(STRINGS "buildnumber" BUILD_NUMBER)

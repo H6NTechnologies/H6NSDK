@@ -106,6 +106,10 @@ typedef int(*H6NSDK_INTERFACE(H6ACServer_kickCallback, 1))(H6N_PlayerID playerID
  */
 typedef void(*H6NSDK_INTERFACE(H6ACServer_attestationCallback, 1))(H6N_PlayerID playerID, uint8_t* attestation, unsigned int length);
 
+/**
+ * 
+ */
+typedef void(*H6NSDK_INTERFACE(H6ACServer_updateCallback, 1))();
 
 
 /**
@@ -117,6 +121,16 @@ typedef void(*H6NSDK_INTERFACE(H6ACServer_attestationCallback, 1))(H6N_PlayerID 
  * Current interface version defined in H6AC_SERVER_VERSION as 1
  */
 _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
+
+	/**
+	 *
+	 */
+	H6NSDK_VIRTUAL(begin, void)(H6N_IntegrationID integrationID);
+
+	/**
+	 * 
+	 */
+	H6NSDK_VIRTUAL(end, void)();
 
 	/**
 	 * 
@@ -139,6 +153,11 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 	 * 
 	 */
 	H6NSDK_VIRTUAL(setAttestationCallback, void)(H6NSDK_INTERFACE(H6ACServer_attestationCallback, 1) callback);
+
+	/**
+	 * 
+	 */
+	H6NSDK_VIRTUAL(setUpdateCallback, void)(H6NSDK_INTERFACE(H6ACServer_updateCallback, 1) callback);
 
 
 } _H6NSDK_IFACE_END(H6ACServer, 1);
