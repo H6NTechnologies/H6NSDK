@@ -299,4 +299,7 @@ libh6n offers two modes, which interface with the underlying libraries—we call
 
 # Finishing Up
 
-If you need *any* help at all with H6NSDK or integrating it into your game, please [contact us](https://h6ntechnologies.com/contact-us/business/index.html) anytime to connect directly with our engineers.  We're always more than happy to help :)
+We're excited to support the success of your game.  If you need *any* help at all with H6NSDK or integrating it into your game, please [contact us](https://h6ntechnologies.com/contact-us/business/index.html) anytime to connect directly with our engineers.  
+
+
+We're always more than happy to help. :)
