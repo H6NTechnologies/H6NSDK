@@ -11,7 +11,7 @@ H6NSDK is a collection of code, designed to integrate H6N Technologies into your
 
 **Why is this repository public?**
 
-At H6N, we do not believe in ìsecurity by obscurity -- the security of our software should not depend on keeping secrets from an adversary.  As such, we donít see any purpose in keeping this project private.  In fact, we believe there are advantages to publishing it, particularly for our customers.  
+At H6N, we do not believe in ‚Äúsecurity by obscurity -- the security of our software should not depend on keeping secrets from an adversary.  As such, we don‚Äôt see any purpose in keeping this project private.  In fact, we believe there are advantages to publishing it, particularly for our customers.  
 
 Please feel free to add this repository to your project as a git submodule, or,  better yet, to incorporate it into your continuous integration system!
 
@@ -33,7 +33,7 @@ Todo
 
 ### CMake Project
 
-It isís super easy to use H6NSDK with a CMake-based project.  Bbecause H6NSDK itself is built with CMake, so you can take advantage of the CMake target system to simplify your build scripts.
+It is‚Äôs super easy to use H6NSDK with a CMake-based project.  Because H6NSDK itself is built with CMake, so you can take advantage of the CMake target system to simplify your build scripts.
 
 **Prerequisites & Requirements**
 
@@ -45,16 +45,16 @@ It isís super easy to use H6NSDK with a CMake-based project.  Bbecause H6NSDK it
 
 
 
-1. **Download (or compile) the H6NSDK for the target operating system, platform, and architecture.** \
+1. **Download (or compile) the H6NSDK for the target operating system, platform, and architecture from the Dev Center, on our website.** \
  \
 The H6NSDK is distributed as a .zip archive, with the following directory structure below.
 *   `bin/` contains shared libraries
 *   `lib/` contains static libraries
 *   `include/` contains the header files for which you should include in your project
-2. **Add the extracted H6NSDK archive to your projectís source tree.** \
+2. **Add the extracted H6NSDK archive to your project‚Äôs source tree.** 
 
 
-    You may decide where to place external libraries, depending on your projectís structure.  Leave the SDKís directory structure intact to take advantage of the included CMake targets.
+    You may decide where to place external libraries, depending on your project‚Äôs structure.  Leave the SDK‚Äôs directory structure intact to take advantage of the included CMake targets.
 
 3. **Add the imported libh6n library to your CMakeLists.txt.**
 \
@@ -67,7 +67,7 @@ In your CMakeLists: \
  \
 In your CMakeLists: \
 `target_link_libraries(my_game h6nsdk::libh6n)`
-5. **Follow the ìGeneric C/C++ Integrationî C/C++ Quick Start Guide (located below).** \
+5. **Follow the ‚ÄúGeneric C/C++ Integration‚Äù C/C++ Quick Start Guide (located below).** 
 
 
 
@@ -82,7 +82,7 @@ This guide will demonstrate the basics of how the H6NSDK API works and how to ac
 
 
 
-*   Your C/C++ project should already be set up, by following the appropriate guide above (ìIncluding H6NSDK In Your Projectî).
+*   Your C/C++ project should already be set up, by following the appropriate guide above (‚ÄúIncluding H6NSDK In Your Project‚Äù).
 *   A multiplayer game with a distinct client and authoritative server that can kick arbitrary players.
 *   Every player is assigned, _at most_, a 128-bit globally unique player ID, e.g., a Steam ID.
 
@@ -97,7 +97,7 @@ In both the client and server, include` libh6n/libh6n.h` in every source file yo
 `#include <libh6n/libh6n.h>`
 2. **Create the H6ACClient interface.** \
  \
-The H6NSDK uses what we call ìinterfacesî to expose functions to you.  Interfaces are simply structures of function pointers, which can be invoked just like a function (similar to virtual classes).  Each interface is versioned, as we use structures to maintain backwards compatibility.  Our goal is to never break API compatibilityóan old game should never have to update H6NSDK to use a newer version of H6AC. \
+The H6NSDK uses what we call ‚Äúinterfaces‚Äù to expose functions to you.  Interfaces are simply structures of function pointers, which can be invoked just like a function (similar to virtual classes).  Each interface is versioned, as we use structures to maintain backwards compatibility.  Our goal is to never break API compatibility‚Äîan old game should never have to update H6NSDK to use a newer version of H6AC. \
  \
 On the game client, we need to create an H6ACClient interface by making a call to the following.
 
@@ -110,11 +110,11 @@ The macros `H6AC_CLIENT_INTERFACE` and `H6AC_CLIENT_VERSION `are provided for ea
  \
 Since `Agent_createInterface` returns a `void*`, we need to cast it to the interface that we would like to use.  In this case, cast it to `H6ACClient`. \
  \
-You should treat created interfaces like a singleton.  Note that the memory buffer that backs each interface is ìownedî by libh6n, and should not be manually freed.
+You should treat created interfaces like a singleton.  Note that the memory buffer that backs each interface is ‚Äúowned‚Äù by libh6n, and should not be manually freed.
 
-3. **Pass the playerís unique ID to H6ACClient.** \
+3. **Pass the player‚Äôs unique ID to H6ACClient.** \
  \
-Call the function setPlayerUniqueID on H6ACClient to supply the playerís unique ID.  Since we support up to 128-bit Player IDs, then for Player IDs less than 128-bits, we need to construct a 128-bit integer.  This is what your code should appear like, so far. 
+Call the function setPlayerUniqueID on H6ACClient to supply the player‚Äôs unique ID.  Since we support up to 128-bit Player IDs, then for Player IDs less than 128-bits, we need to construct a 128-bit integer.  This is what your code should appear like, so far. 
  
 
         H6ACClient* client = (H6ACClient*)Agent_createInterface(H6AC_CLIENT_INTERFACE, H6AC_CLIENT_VERSION); 
@@ -124,16 +124,16 @@ Call the function setPlayerUniqueID on H6ACClient to supply the playerís unique 
      
         client->setPlayerUniqueID(pid);
     
-    Often times, H6AC can automatically acquire the playerís unique ID, if you are using a platform such as Steam.  See Advanced Usage for additional details. [todo]
+    Often times, H6AC can automatically acquire the player‚Äôs unique ID, if you are using a platform such as Steam.  See Advanced Usage for additional details. [todo]
 4. **Create the H6ACServer interface.** \
  \
-On the game server, weíll need to create an H6ACServer interface, in a similar manner as the client: \
+On the game server, we‚Äôll need to create an H6ACServer interface, in a similar manner as the client: \
 `H6ACServer* server = (H6ACServer*)Agent_createInterface(H6AC_SERVER_INTERFACE, H6AC_SERVER_VERSION);`
 \
-Youíll only need one server interface instance.  It is thread-safe and can be shared between network channels.
+You‚Äôll only need one server interface instance.  It is thread-safe and can be shared between network channels.
 5. **Inform H6ACServer of your Integration ID.** \
  \
-When your server starts up, call the `begin `function of `H6ACServer` with your Integration ID.  Your Integration ID can be found on the Dev Center. 
+When your server starts up, call the `begin` function of `H6ACServer` with your Integration ID.  Your Integration ID can be found on the Dev Center, located on our website. 
 
         H6N_IntegrationID igr;
         igr.bytes = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // put your Integration ID here 
@@ -147,7 +147,7 @@ H6AC must be able to kick any connected player at any time.  To do this, we must
             // kick the player from the server here 
             return true; // return false if unable 
        } 
-       Ö 
+       ‚Ä¶ 
        server->setKickCallback(KickPlayer); 
    \
 H6AC also needs to be able to send a string of bytes from the server to a client.  This string is called the _client attestation token_.  Your server must receive the token and reliably transmit the token to the specified player over the network.  The token must be securely and exclusively sent to only the indicated player (as broadcasting the token to other players would enable players to impersonate each other). 
@@ -155,7 +155,7 @@ H6AC also needs to be able to send a string of bytes from the server to a client
         void SendAttestation(H6N_PlayerID playerID, uint8_t* attestation, unsigned int length) { 
     	    // send the specified attestation over the network to the specified player -- the specifics of this are up to your game 
         } 
-        Ö 
+        ‚Ä¶ 
         server->setAttestationCallback(SendAttestation);
 
 7. **Submit the client attestation token.** \
@@ -165,7 +165,7 @@ When a client attestation token is received by the game client from the server, 
 `client->submitClientAttestation(attestation, attestationLength);`
 8. **Register players when they join the server.** \
  \
-For H6AC to begin protecting playersí game clients, it must be notified when the player joins the server.  You will need to call the correct `H6ACClient `function, depending on your networking stackóif the player is connected via IPv4, use `registerPlayerIPv4`; if the player is connected via IPv6, use `registerPlayerIPv6`. More details shown below. \
+For H6AC to begin protecting players‚Äô game clients, it must be notified when the player joins the server.  You will need to call the correct `H6ACClient `function, depending on your networking stack‚Äîif the player is connected via IPv4, use `registerPlayerIPv4`; if the player is connected via IPv6, use `registerPlayerIPv6`. More details shown below. \
  \
 **For IPv4:** \
 `server->registerPlayerIPv4(playerUniqueID, remoteAddr, remotePort);` \
@@ -175,26 +175,26 @@ For H6AC to begin protecting playersí game clients, it must be notified when the
        `H6N_IPV6 addr = ; // populate 128-bit int here representing the player's IPv6 address` \
        `server->registerPlayerIPv6(playerUniqueID, addr, remotePort); `\
 \
-The first argument is the playerís 128-bit unique ID, which is the same one specified to the H6ACClient.  The second argument represents the playerís IP address, which is a 32-bit integer for IPv4, or a 128-bit integer for IPv6.  The final argument represents the port number of the remote client.  If the port number is not available or is not applicable to your transit protocol, specify a port number of 0.
+The first argument is the player‚Äôs 128-bit unique ID, which is the same one specified to the H6ACClient.  The second argument represents the player‚Äôs IP address, which is a 32-bit integer for IPv4, or a 128-bit integer for IPv6.  The final argument represents the port number of the remote client.  If the port number is not available or is not applicable to your transit protocol, specify a port number of 0.
 9. **Un-register players when they leave the server.** \
  \
-When a player disconnects from the server, H6AC must know. This allows H6AC to invalidate the playerís anti-cheat session.  You can do this by calling the `unregisterPlayer` function. \
+When a player disconnects from the server, H6AC must know. This allows H6AC to invalidate the player‚Äôs anti-cheat session.  You can do this by calling the `unregisterPlayer` function. \
  \
 `server->unregisterPlayer(playerUniqueID);` \
  \
-If your server crashes or causes players to disconnect without informing H6ACódonít worry, as H6AC will eventually garbage collect inactive sessions.
+If your server crashes or causes players to disconnect without informing H6AC‚Äîdon‚Äôt worry, as H6AC will eventually garbage collect inactive sessions.
 10. **Generate a launcher for your game.** \
  \
 Todo.
 11. **Add binaries to your deployment.** \
  \
-You will need to provide a few extra binaries with your game distribution.  Place your generated launcher in the same directory as your gameís main binary, along with `libcapsule.dll` and `libh6n.dll`.   \
+You will need to provide a few extra binaries with your game distribution.  Place your generated launcher in the same directory as your game‚Äôs main binary, along with `libcapsule.dll` and `libh6n.dll`.   \
  \
-**NOTE**: Make sure to update your gameís relevant settings in your distribution platform(s), such as Steam. \
+**NOTE**: Make sure to update your game‚Äôs relevant settings in your distribution platform(s), such as Steam.
 
 12. **Congratulations! Your game is now securely protected by H6AC!** \
  \
-Run your gameís new distribution package to ensure your integration is working.
+Run your game‚Äôs new distribution package to ensure your integration is working.
  
 
 
@@ -218,14 +218,14 @@ TODO
 
 ## Building H6NSDK
 
-Firstly, ask yourself whether you really need to build H6NSDK yourself.  You will mostly likely benefit more from using the pre-built version, which is available for download through the Dev Center, located on our website.  Our pre-built binaries are run through an extensive automated test suite, which ensures reliabilityówe do **not **recommend self-built binaries, as we cannot guarantee support for them (unless you are building for a target that is not pre-built by H6N, or if you have custom toolchain requirements).
+Firstly, ask yourself whether you really need to build H6NSDK yourself.  You will mostly likely benefit more from using the pre-built version, which is available for download through the Dev Center, located on our website.  Our pre-built binaries are run through an extensive automated test suite, which ensures reliability‚Äîwe do **not **recommend self-built binaries, as we cannot guarantee support for them (unless you are building for a target that is not pre-built by H6N, or if you have custom toolchain requirements).
 
 **Prerequisites & Requirements**
 
 
 
 *   CMake version 3.0.0 or newer. ([Download here](https://cmake.org))
-*   [SWIG](http://www.swig.org/) 3.0 or newer, added to your systemís PATH environment variable (if generating non-C bindings, like C#).
+*   [SWIG](http://www.swig.org/) 3.0 or newer, added to your system‚Äôs PATH environment variable (if generating non-C bindings, like C#).
 *   One of the supported build systems below:
     *   Microsoft Visual Studio 2010 or later (earlier versions are supported, if using a compatible `stdint.h` in your include path)
     *   Unix Makefiles on GCC or Clang
@@ -233,26 +233,26 @@ Firstly, ask yourself whether you really need to build H6NSDK yourself.  You wil
     *   Xcode
 *   Checkout (or download) this project (<code>git clone [https://github.com/h6ntechnologies/H6NSDK.git](https://github.com/h6ntechnologies/H6NSDK.git)</code>).
 
-<strong>Instructions</strong>
+**Instructions**
 
-**Building with Visual Studio**
+**‚Ä¢ Building with Visual Studio**
 
 
 
 1. Open Command Prompt in the H6NSDK directory.
-2. Run `cmake -G "Visual Studio X" . `where X is the VS version number you would like to use.  For example, use ìVisual Studio 15î to use Visual Studio 2017.
+2. Run `cmake -G "Visual Studio X" . `where X is the VS version number you would like to use.  For example, use ‚ÄúVisual Studio 15‚Äù to use Visual Studio 2017.
 3. Open the `h6nsdk.sln`  file that was generated in the H6NSDK directory.
 4. Select the appropriate build configuration for your target in Visual Studio, including your target architecture.
 5. Build the solution with Visual Studio.  The output binaries should be listed in the Output window.
 
-**Building with Unix Makefiles**
+**‚Ä¢ Building with Unix Makefiles**
 
 
 
 1. Navigate your shell to the H6NSDK directory.
 2. Run `cmake -G "Unix Makefiles" . && make` .
 
-**Building with Ninja**
+**‚Ä¢ Building with Ninja**
 
 
 
@@ -260,10 +260,7 @@ Firstly, ask yourself whether you really need to build H6NSDK yourself.  You wil
 2. Navigate your shell to the H6NSDK directory.
 3. Run `cmake -G "Ninja" . && ninja all`.
 
-**Building with Xcode**
-
-.
-
+**‚Ä¢ Building with Xcode**
 
 
 1. Navigate Terminal to the H6NSDK directory.
@@ -278,7 +275,7 @@ Firstly, ask yourself whether you really need to build H6NSDK yourself.  You wil
 
 ### Using proxied mode vs direct mode
 
-libh6n offers two modes, which interface with the underlying librariesówe call these modes **proxied mode** and **direct mode**.  Both modes feature their own advantages and disadvantages, so select the appropriate mode, depending on your specific usage needs.
+libh6n offers two modes, which interface with the underlying libraries‚Äîwe call these modes **proxied mode** and **direct mode**.  Both modes feature their own advantages and disadvantages, so select the appropriate mode, depending on your specific usage needs.
 
 **Proxied mode**
 
@@ -288,15 +285,18 @@ libh6n offers two modes, which interface with the underlying librariesówe call t
 *   All function calls pass through an intermediary shared library (`libh6n.[dll/so/dylib]`).
 *   libh6n lazy-loads the requested underlying library on request, i.e., `libcapsule.dll` will not be loaded until a call to `Capsule_createInterface`.
 *   libh6n can hot-reload any underlying library.  For example, if there is an update to H6AC while a player is in-game, H6AC can be automatically updated without having to restart the game.
-*   You either have to statically link against libh6n, or include the libh6n dynamic library with your game.  Either way, this will increase your gameís file size by only a few kilobytes.
+*   You either have to statically link against libh6n, or include the libh6n dynamic library with your game.  Either way, this will increase your game‚Äôs file size by only a few kilobytes.
 
 **Direct mode**
 
 
 
 *   Direct mode is easier to get started with.
-*   libh6n becomes ìheader-only.î That is, all function calls pass through directly to the underlying library via dynamic linking.
+*   libh6n becomes ‚Äúheader-only.‚Äù That is, all function calls pass through directly to the underlying library via dynamic linking.
 *   On Windows systems, an implib needs to be generated for each underlying library that you would like to use.  Precompiled implibs are available for download through the Dev Center, located on our website.
-*   While it is possible to still hot-swap underlying libraries, it is lot harderówe do not recommend writing your own hot-swapping code.
+*   While it is possible to still hot-swap underlying libraries, it is lot harder‚Äîwe do not recommend writing your own hot-swapping code.
 
 
+# Finishing Up
+
+If you need *any* help at all with H6NSDK or integrating it into your game, please [contact us](https://h6ntechnologies.com/contact-us/business/index.html) anytime to connect directly with our engineers.  We're always more than happy to help :)
