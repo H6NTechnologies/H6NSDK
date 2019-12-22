@@ -134,7 +134,7 @@ extern "C" {
 
 		if (!AcquireAgent()) {
 			Platform_leaveMutex(&GAgent.mutex);
-			return 0;
+			return H6N_ERROR_MODULE_NOT_FOUND;
 		}
 
 		void* result = GAgent.createInterface(name, version);
@@ -147,7 +147,7 @@ extern "C" {
 
 		if (!AcquireCapsule()) {
 			Platform_leaveMutex(&GCapsule.module.mutex);
-			return 0;
+			return H6N_ERROR_MODULE_NOT_FOUND;
 		}
 
 		void* result = GCapsule.module.createInterface(name, version);

@@ -42,7 +42,7 @@ TEST(SDKAgent, TestClientCreateVer1) {
 	H6N_Int128 id = { 0x1234, 0x1234 };
 	cli->setPlayerUniqueID(id);
 	cli->submitClientAttestation(nullptr, 0);
-	cli->purgeState();
+	cli->disconnect();
 }
 
 TEST(SDKAgent, TestServerCreateVer1) {
@@ -52,8 +52,7 @@ TEST(SDKAgent, TestServerCreateVer1) {
 
 	// Test that all calls don't crash
 	H6N_Int128 i;
-	serv->registerPlayerIPv4(i, 0, 0);
-	serv->registerPlayerIPv6(i, i, 0);
+	serv->registerPlayer(i, 0, 0);
 	serv->setAttestationCallback(nullptr);
 	serv->setKickCallback(nullptr);
 	serv->unregisterPlayer(i);

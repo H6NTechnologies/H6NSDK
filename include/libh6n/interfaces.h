@@ -80,7 +80,7 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 	 * server.  Calling this function is optional -- H6AC should eventually clear out its internal state, but this 
 	 * function guarantees it.
 	 */
-	H6NSDK_VIRTUAL(purgeState, void)();
+	H6NSDK_VIRTUAL(disconnect, void)();
 
 
 
@@ -135,8 +135,7 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 	/**
 	 * 
 	 */
-	H6NSDK_VIRTUAL(registerPlayerIPv4, void)(H6N_PlayerID playerID, long remoteAddr, uint16_t remotePort);
-	H6NSDK_VIRTUAL(registerPlayerIPv6, void)(H6N_PlayerID playerID, H6N_IPV6 remoteAddr, uint16_t remotePort);
+	H6NSDK_VIRTUAL(registerPlayer, void)(H6N_PlayerID playerID, uint8_t* sharedUnique, unsigned int sharedUniqueLen);
 
 	/**
 	 * Informs H6AC that the player should no longer be considered by H6AC. Typically, this is called when the player
