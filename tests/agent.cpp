@@ -17,19 +17,19 @@ public:
  * Regression testing for the SDK
  */
 TEST(SDKAgent, TestNonExistingInterfaceName) {
-	EXPECT_EQ(Agent_createInterface("DoesNotExist", 1), nullptr);
+	EXPECT_EQ(Agent_createInterface("DoesNotExist", 1), H6N_ERROR_INTERFACE_NOT_FOUND);
 }
 
 TEST(SDKAgent, TestInvalidInterfaceName) {
-	EXPECT_EQ(Agent_createInterface("", 1), nullptr);
+	EXPECT_EQ(Agent_createInterface("", 1), H6N_ERROR_INTERFACE_NOT_FOUND);
 }
 
 TEST(SDKAgent, TestNonExistingInterfaceVer) {
-	EXPECT_EQ(Agent_createInterface(H6AC_CLIENT_INTERFACE, 9001), nullptr);
+	EXPECT_EQ(Agent_createInterface(H6AC_CLIENT_INTERFACE, 9001), H6N_ERROR_INTERFACE_NOT_FOUND);
 }
 
 TEST(SDKAgent, TestNegativeInterfaceVer) {
-	EXPECT_EQ(Agent_createInterface(H6AC_CLIENT_INTERFACE, -1), nullptr);
+	EXPECT_EQ(Agent_createInterface(H6AC_CLIENT_INTERFACE, -1), H6N_ERROR_INTERFACE_NOT_FOUND);
 }
 
 TEST(SDKAgent, TestClientCreateVer1) {

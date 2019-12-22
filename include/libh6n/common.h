@@ -46,10 +46,10 @@
  */
 
 // The specified interface name or version pair could not be found
-#define H6N_ERROR_INTERFACE_NOT_FOUND (void*)-1;
+#define H6N_ERROR_INTERFACE_NOT_FOUND ((void*)-1)
 
 // A required module or dynamic library could not be found or loaded
-#define H6N_ERROR_MODULE_NOT_FOUND (void*)-2
+#define H6N_ERROR_MODULE_NOT_FOUND ((void*)-2)
 
 // Specify min/max for error calculation
 #define H6N_ERROR_MIN H6N_ERROR_MODULE_NOT_FOUND
