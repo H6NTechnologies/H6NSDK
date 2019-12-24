@@ -58,6 +58,20 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
     H6NSDK_VIRTUAL(isPlayerIDAquired, int)();
 
 	/**
+	 * Sets a shared secret value that is unique to the player. This value must be known by the server
+	 * before the server registers this client. Examples of acceptable shared secrets include the client's
+	 * IP address and port combo, authentication tokens (i.e. Steam auth tokens), shared encryption keys,
+	 * etc.  Really anything that is unique to this client session can be used.
+	 *
+	 * Internally, the shared secret is strongly cryptographically hashed, so secrets of any length are
+	 * acceptable.
+	 *
+	 * @param sharedSecret a unique-to-this-player string
+	 * @param sharedSecretLen the length of sharedSecret, in bytes
+	 */
+	H6NSDK_VIRTUAL(setSharedSecret, void)(const uint8_t* sharedSecret, unsigned int sharedSecretLen);
+
+	/**
 	 * Submits an acquired client attestation token to the agent.
 	 * Attestation tokens provide a strongly secure method to authenticate a client. Without an attestation token, the H6AC client
 	 * will present only the player unique ID to the H6AC server for authentication. While we believe this is "good enough" security,
@@ -135,7 +149,7 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 	/**
 	 * 
 	 */
-	H6NSDK_VIRTUAL(registerPlayer, void)(H6N_PlayerID playerID, uint8_t* sharedUnique, unsigned int sharedUniqueLen);
+	H6NSDK_VIRTUAL(registerPlayer, void)(H6N_PlayerID playerID, const uint8_t* sharedSecret, unsigned int sharedSecretLen);
 
 	/**
 	 * Informs H6AC that the player should no longer be considered by H6AC. Typically, this is called when the player
