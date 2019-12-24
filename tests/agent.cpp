@@ -40,6 +40,7 @@ TEST(SDKAgent, TestClientCreateVer1) {
 	// Test that all calls don't crash
 	EXPECT_EQ(cli->isPlayerIDAquired(), 0);
 	H6N_Int128 id = { 0x1234, 0x1234 };
+	cli->setSharedSecret(nullptr, 0);
 	cli->setPlayerUniqueID(id);
 	cli->submitClientAttestation(nullptr, 0);
 	cli->disconnect();
