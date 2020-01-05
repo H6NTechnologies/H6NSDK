@@ -132,7 +132,7 @@ typedef union _H6N_Int128 {
         uint64_t lo;
         uint64_t hi;
     } of64;
-    uint8_t bytes[8];
+    uint8_t bytes[16];
 #ifdef __SIZEOF_INT128__
     unsigned __int128 value;
 #endif
