@@ -35,8 +35,6 @@ extern "C" {
  */
 _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 
-	H6NSDK_VIRTUAL(begin, void)(H6N_IntegrationID integrationID);
-
     /**
      * Specifies the unique player ID for the current session, such as a player ID, account number, Steam ID, or other
      * number that uniquely identifies the current player. This value must exactly match the value presented to H6AC
