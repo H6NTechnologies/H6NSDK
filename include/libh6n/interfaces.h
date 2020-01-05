@@ -74,13 +74,9 @@ _H6NSDK_IFACE_BEGIN(H6ACClient, 1) {
 	/**
 	 * Submits an acquired client attestation token to the agent.
 	 * Attestation tokens provide a strongly secure method to authenticate a client. Without an attestation token, the H6AC client
-	 * will present only the player unique ID to the H6AC server for authentication. While we believe this is "good enough" security,
+	 * will present only the player unique ID + shared secret to the H6AC server for authentication. While we believe this is "good enough" security,
 	 * you may elect to enable client authentication tokens, in which your game's server sends an arbitrarily-lengthed token, generated
 	 * by H6ACServer, to the game client, which then presents the token to the H6AC client using this function.
-	 * 
-	 * Electing to use client attestation ensures that an attacker cannot maliciously impersonate another player that happens to share the
-	 * same network as the attacker.  We find this to be incredibly unlikely, if not impossible on IPv6 networks, but plausible on
-	 * IPv4 networks, particularly when the player is behind NAT.
 	 *
 	 * @param attestation the attestation token to submit, of the specified length
 	 * @param length the length of the attestation string, in bytes
