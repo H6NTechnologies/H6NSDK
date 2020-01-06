@@ -4,6 +4,7 @@
 
 # H6NSDK
 
+Take a look at our new [sample project](https://github.com/H6NTechnologies/Sample-AssaultCube/)!
 
 ## About This Project
 
