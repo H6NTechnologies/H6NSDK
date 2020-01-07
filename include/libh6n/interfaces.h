@@ -175,6 +175,32 @@ _H6NSDK_IFACE_BEGIN(H6ACServer, 1) {
 H6ACServer* Agent_createServer();
 
 
+#define H6AC_REPORT_VERSION 1
+#define H6AC_REPORT_INTERFACE "H6ACReport"
+
+/**
+ * `H6ACReport` is an interface through which players can report other players
+ * as cheaters.  This interface can be used by your game client or server,
+ * whichever you prefer.
+ * 
+ * Interface name defined in H6AC_REPORT_INTERFACE as "H6ACReport"
+ * Current interface version defined in H6AC_REPORT_VERSION as 1
+ */
+_H6NSDK_IFACE_BEGIN(H6ACReport, 1) {
+
+	/**
+	 * Report a player as a cheater, by player ID.
+	 *
+	 * @param playerID the player ID to report
+	 * @param reserved reserved for future use, implementations should set this to zero
+	 */
+	H6NSDK_VIRTUAL(reportPlayer, void)(H6N_PlayerID playerID, int reserved);
+
+
+} _H6NSDK_IFACE_END(H6ACReport, 1);
+#define H6ACReport H6NSDK_INTERFACE(H6ACReport, 1)
+
+H6ACReport* Agent_createReport();
 
 
 #ifdef __cplusplus

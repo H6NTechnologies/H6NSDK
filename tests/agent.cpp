@@ -1,4 +1,6 @@
 #include "gtest/gtest.h"
+#include "libh6n/common.h"
+#include "libh6n/interfaces.h"
 
 #include <libh6n/libh6n.h>
 
@@ -62,6 +64,15 @@ TEST(SDKAgent, TestServerCreateVer1) {
 	serv->setUpdateCallback(nullptr);
 }
 
+TEST(SDKAgent, TestReportCreateVer1) {
+	// Test creation
+	H6ACReport* report = (H6ACReport*)Agent_createInterface(H6AC_REPORT_INTERFACE, 1);
+
+	// Test that all calls don't crash
+	H6N_PlayerID pid;
+	report->reportPlayer(pid, 0);
+}
+
 TEST(SDKAgent, TestClientAcquire) {
 	EXPECT_NE(Agent_createClient(), nullptr);
 }
@@ -70,3 +81,6 @@ TEST(SDKAgent, TestServerAcquire) {
 	EXPECT_NE(Agent_createServer(), nullptr);
 }
 
+TEST(SDKAgent, TestReportAcquire) {
+	EXPECT_NE(Agent_createReport(), nullptr);
+}
