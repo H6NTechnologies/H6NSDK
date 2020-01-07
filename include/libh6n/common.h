@@ -133,12 +133,22 @@ typedef union _H6N_Int128 {
         uint64_t hi;
     } of64;
     uint8_t bytes[16];
-#ifdef __SIZEOF_INT128__
+#if defined(__SIZEOF_INT128__) || defined(CRT_HAS_128BIT)
     unsigned __int128 value;
 #endif
+
 } H6N_Int128;
 #endif
 
+#ifdef __cplusplus
+inline H6N_Int128 H6N_createInt128(uint64_t low, uint64_t high) {
+    return { low, high };
+}
+
+inline H6N_Int128 H6N_createInt128(uint64_t low) {
+    return { low, 0 };
+}
+#endif
 
 typedef H6N_Int128 H6N_PlayerID;
 typedef H6N_Int128 H6N_IntegrationID;

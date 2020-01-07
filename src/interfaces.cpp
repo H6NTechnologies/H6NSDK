@@ -113,10 +113,6 @@ H6Capsule* Capsule_createCapsule() {
 }
 
 
-H6N_Int128 H6N_createInt128(uint64_t low, uint64_t high) {
-	return { low, high };
-}
-
 /*
  * Exported function implementation
  */

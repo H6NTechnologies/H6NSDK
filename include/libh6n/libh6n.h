@@ -23,8 +23,6 @@ extern "C" {
 
 	void H6N_initialize();
 
-	H6N_Int128 H6N_createInt128(uint64_t low, uint64_t high);
-
 	/**
 	 * Retrieves a pointer to an interface by the specified name-version pair. The libh6n API tries to remain backwards-
 	 * and forwards-compatible, so interfaces are versioned. Libh6n should automatically use the latest version available
