@@ -137,6 +137,13 @@ typedef union _H6N_Int128 {
     unsigned __int128 value;
 #endif
 
+#ifdef __cplusplus
+    bool operator==(const _H6N_Int128& other) const {
+        return other.of64.lo == this->of64.lo
+            && other.of64.hi == this->of64.hi;
+    }
+#endif
+
 } H6N_Int128;
 #endif
 
